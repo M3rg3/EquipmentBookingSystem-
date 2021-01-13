@@ -1,0 +1,23 @@
+/**
+ * Directory
+ * Index.js
+ * |
+ * Booking
+ * |  |
+ * |  |-bookingpage.html
+ * |  |-bookingstyle.css
+ * |
+ * Inventory
+ * |  |
+ * |  |-Inventory.html
+ * |  |-Inventorystyle.css
+ * |  
+ * LandingPage
+ * |  |
+ * |  |-LandingPage.html
+ * |  |-Landingstyle.css
+ * |
+ * node_modules
+ * |
+ * package.json 
+ */

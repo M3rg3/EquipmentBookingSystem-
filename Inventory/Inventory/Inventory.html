@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+
+
+    <style>
+        body {
+            background: #202020;
+            text-align: center;
+            margin: 0px;
+        }
+
+        #header {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            height: 135px;
+            position: relative;
+            border-bottom: 1px solid #4a4a4a;
+        }
+
+        #header h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            position: relative;
+            top: 30px;
+            font-size: 40px;
+            color: white;
+        }
+
+        #header h2 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            color: #7e7e7e;
+        }
+
+        hr#header_stripe {
+            height: 12px;
+            position: relative;
+            top: -7px;
+            background-color: #191919;
+            border: none;
+            color: #191919;
+
+        }
+
+        #wrapper {
+            margin-left: auto;
+            margin-right: auto;
+            width: 900px;
+            text-align: center;
+        }
+
+        #toppanel {
+            position: absolute;
+            top: 135px;
+            width: 900px;
+            z-index: 25;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #panel {
+            width: 900px;
+            position: relative;
+            top: 1px;
+            height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            z-index: 10;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        #panel_contents {
+            background: black;
+            filter: alpha(opacity=70);
+            -moz-opacity: 0.70;
+            -khtml-opacity: 0.70;
+            opacity: 0.70;
+            height: 100%;
+            width: 904px;
+            position: absolute;
+            z-index: -1;
+        }
+
+        .border {
+            border: 15px #1d1d1d solid;
+        }
+
+        .Container {
+            height: 600px;
+            width: 20%;
+            background-color: #46392f;
+            margin: 5%;
+            float: left;
+            border: 15px #1d1d1d solid;
+        }
+
+        .preview {
+            margin-top: 10px;
+            height: 200px;
+            width: 80%;
+        }
+
+        .title {
+            background-color: black;
+            border: 2px #1d1d1d solid;
+            margin: 5%;
+            height: 10%;
+            width: 90%;
+        }
+
+        .description {
+            background-color: black;
+            border: 2px #1d1d1d solid;
+            ;
+            margin: 5%;
+            height: 25%;
+            width: 90%;
+        }
+
+        .pdDestext {
+            color: white;
+        }
+
+        .pdTitletext {
+            color: white;
+        }
+
+        .modal-container {
+            height: 600px;
+            width: 20%;
+            background-color: gray;
+            margin: 5%;
+            float: left;
+        }
+
+        .modal-Title {
+            background-color: blue;
+            margin: 5%;
+            height: 10%;
+            width: 90%;
+        }
+
+
+
+        .modal-description {
+            background-color: purple;
+            margin: 5%;
+            height: 25%;
+            width: 90%;
+        }
+
+        #admin {
+            float: right;
+            width: 100px;
+            height: 100px;
+            border-color: gray;
+            margin-right: 5%;
+        }
+
+        #adminText {
+            font-size: 200%;
+            color: gray;
+            border: gray;
+        }
+
+        #logout {
+            float: left;
+            width: 100px;
+            height: 100px;
+            border-color: gray;
+            margin-left: 5%;
+        }
+
+        #logoutText {
+            font-size: 200%;
+            color: gray;
+            border: gray;
+        }
+
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            -webkit-animation-name: fadeIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            background-color: #fefefe;
+            width: 100%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s
+        }
+
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: gray;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: gray;
+            color: white;
+        }
+
+
+        @-webkit-keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                bottom: -300px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+    </style>
+    <script>
+
+        var currentid = '0';
+
+
+        let populatesocket = new WebSocket("ws://localhost:4000/populate");
+        let bookingsocket = new WebSocket('ws://localhost:4000/createbooking');
+        let validationsocket = new WebSocket("ws://localhost:4000/validation");
+
+
+        populatesocket.onopen = function (e) {
+            console.log("Population Web Socket is open")
+        }
+
+        bookingsocket.onopen = function (e) {
+            console.log("Booking web socket is open ")
+        }
+
+        validationsocket.onopen = function (e) {
+            console.log("validation web socket is open")
+        }
+
+        populatesocket.onmessage = function (event) {
+            populate(event.data)
+        }
+
+        bookingsocket.onmessage = function (event) {
+            alert(event.data);
+        }
+
+        validationsocket.onmessage = function (event) {
+
+            console.log(event.data);
+
+            var reply = event.data
+
+            console.log(reply)
+
+            if (reply == "Authorised") {
+                window.location.href = "http://localhost:4000/admin"
+            }
+            else {
+                alert("User is not authorised, please contact equipment technican to gain athorisation.");
+            }
+        }
+
+
+        function pagevalidate() {
+            if (localStorage.getItem("AccountId") === null) {
+                window.location.href = 'http://localhost:4000';
+                console.log("error")
+            }
+            else {
+                populatesocket.send("test");
+
+
+            }
+        };
+
+
+
+
+
+
+        function populate(product) {
+
+            console.log(JSON.parse(product))
+
+            var jsonitems = JSON.parse(product);
+
+            var productstr = product.split(",");
+
+            var productidstr = productstr[0];
+            var productnamestr = productstr[1];
+            var productdescriptionstr = productstr[2];
+            var productimglinkstr = productstr[3];
+
+            var productidsplit = productidstr.split('"');
+
+            var productnamesplit = productnamestr.split('"');
+            var productdescriptionsplit = productdescriptionstr.split('"');
+            var productimglinksplit = productimglinkstr.split('"');
+
+            var productid = productidsplit[3];
+            var productname = productnamesplit[3];
+            var productdescription = productdescriptionsplit[3];
+            var productimglink = productimglinksplit[3] + ',' + productidsplit[4];
+
+            
+            var Newcontainer = document.createElement('div');
+            Newcontainer.className = 'Container';
+            Newcontainer.id = productid;
+            document.getElementById('content').appendChild(Newcontainer);
+
+            var Newimg = document.createElement('img');
+            Newimg.className = 'preview';
+            Newimg.src = jsonitems.imglink
+            document.getElementById(productid).appendChild(Newimg);
+
+            var NewTitle = document.createElement('div')
+            NewTitle.className = 'title';
+            Titleid = productid + '1'
+            NewTitle.id = Titleid
+            document.getElementById(productid).appendChild(NewTitle);
+
+            var TitleText = document.createElement('p');
+            TitleText.className = 'pdTitletext';
+            var TitleTextId = productid + '5';
+            TitleText.id = TitleTextId;
+            Ttext = document.createTextNode(productname);
+            TitleText.appendChild(Ttext);
+            document.getElementById(Titleid).appendChild(TitleText);
+
+            var NewDescription = document.createElement('div')
+            NewDescription.className = 'description';
+            Descriptionid = productid + '2';
+            NewDescription.id = Descriptionid;
+            document.getElementById(productid).appendChild(NewDescription);
+
+            var DescriptionText = document.createElement('p');
+            DescriptionText.className = 'pdDestext';
+            DescriptionTextId = productid + '6';
+            DescriptionText.id = DescriptionTextId;
+            DesText = document.createTextNode(productdescription);
+            DescriptionText.appendChild(DesText);
+            document.getElementById(Descriptionid).appendChild(DescriptionText);
+
+            var BookButton = document.createElement('INPUT');
+            BookButton.className = 'Bookbutton';
+            Buttonid = productid + '3'
+            BookButton.id = Buttonid
+            BookButton.value = 'Book Equipment';
+            BookButton.setAttribute("type", "button");
+            var onClickCommand = 'BookItem("' + productid + '")';
+            BookButton.setAttribute("onclick", onClickCommand);
+
+            document.getElementById(productid).appendChild(BookButton);
+
+
+
+        };
+
+
+        function BookItem(productid) {
+
+            var modal = document.getElementById("myModal");
+
+            console.log("button is working");
+            var PID = productid;
+
+            currentid = productid
+            modal.style.display = 'block';
+
+            var selectedItemTitleId = PID + '5';
+
+            console.log('selectedItemTitleId ---> ' + selectedItemTitleId);
+
+
+            var selectedItemTitle = document.getElementById(selectedItemTitleId).textContent;
+
+            console.log('selectedItemTitle ------> ' + selectedItemTitle);
+
+            var modaltitle = document.createElement('p')
+            modaltitle.id = 'modal-title';
+            titletext = document.createTextNode(selectedItemTitle);
+            modaltitle.appendChild(titletext);
+            document.getElementById('modalTitle').appendChild(modaltitle);
+
+        };
+
+        var span = document.getElementsByClassName("close")[0];
+
+
+        window.onclick = function (event) {
+            var modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+                var modaltitle = document.getElementById('modal-title');
+                modaltitle.remove();
+            };
+        };
+
+        function CreateBooking() {
+
+            console.log(currentid);
+
+            var selectedDate = document.getElementById('calender')
+
+            console.log(selectedDate.value);
+
+            var d = new Date();
+
+            var dd = d.getDate();
+            var mm = d.getMonth() + 1;
+            var yyyy = d.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+
+            var TodayDate = yyyy + '-' + mm + '-' + dd;
+
+            var TodayDateformat = new Date();
+            var selectedDatefotmat = new Date(selectedDate.value);
+
+            console.log("selectedDate == " + selectedDate.value);
+            console.log(TodayDateformat);
+            console.log(selectedDatefotmat);
+
+            if (selectedDatefotmat < TodayDateformat) {
+                alert("Equipment can only be booked at least one day in advance.");
+            }
+            else {
+                console.log("Date is valid");
+
+                var userid = localStorage.getItem('AccountId');
+
+                console.log("user id is currently -->" + userid);
+
+                var booking = "{ date: '" + selectedDate.value + "', product: '" + currentid + "', user: '" + userid + "'}";
+
+                console.log(booking);
+
+                bookingsocket.send(booking);
+
+            }
+        }
+
+        function navigate() {
+
+            var user = localStorage.getItem("AccountId")
+
+            console.log(user);
+
+            validationsocket.send(user);
+        };
+
+        function navigateout() {
+            window.location.href = "http://localhost:4000/"
+        };
+
+    </script>
+
+
+</head>
+
+<body onload="pagevalidate();">
+
+
+
+    <div id="header">
+        <div id="admin">
+            <button id="adminText" onclick="navigate()">Admin</button>
+        </div>
+        <div id="logout">
+            <button id="logoutText" onclick="navigateout()">logout</button>
+        </div>
+        <h1>Equipment Inventory system</h1>
+        <br />
+        <h2>Plymouth University</h2>
+    </div>
+
+
+
+    <hr id="header_stripe" />
+
+    <div id="wrapper">
+        <div id="toppanel">
+
+
+        </div>
+    </div>
+    <div id="content">
+
+    </div>
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h2>Please enter a the date you wish to book this Item out For.</h2>
+            </div>
+            <div class="modal-body" id="modalTitle">
+                <input type="date" id="calender">
+            </div>
+            <div class="modal-footer">
+                <input type="button" id='dateInput' value="Submit Booking" onclick="CreateBooking();">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
